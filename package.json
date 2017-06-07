@@ -1,0 +1,19 @@
+{
+  "name": "thunder-network.github.io",
+  "version": "1.0.0",
+  "description": "Thunder is a payment channel for Ethereum to make millions of micro transactions almost instantly without paying for gas each time. You can settle and write the final ledger on the blockchain whenever you want.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thunder-network/thunder-network.github.io.git"
+  },
+  "author": "Harsh Vakharia <harshjv@gmail.com> (https://harshjv.github.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thunder-network/thunder-network.github.io/issues"
+  },
+  "homepage": "https://github.com/thunder-network/thunder-network.github.io#readme"
+}
