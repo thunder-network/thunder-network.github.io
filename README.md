@@ -25,7 +25,7 @@ Thunder is a payment channel for Ethereum to make millions of micro transactions
 ## 🔨 Creators
 
 * Hrishikesh Huilgolkar [@hrishikeshio](https://github.com/hrishikeshio)
-* Harsh Vakharia [@harshjv](https://github.io/harshjv)
+* Harsh Vakharia [@harshjv](https://github.com/harshjv)
 
 
 ## 🔥 License
