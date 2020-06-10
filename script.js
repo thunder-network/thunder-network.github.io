@@ -160,54 +160,56 @@ socket.on('transaction', function (data) {
   }
 })
 
-web3.eth.getAccounts(function (err, accounts) {
-  if (err) throw err
-
-  var myAddress = accounts[0]
-
-  app.initFrom = myAddress
-  app.myAddress = myAddress
-
-  var event = channelFactory.ChannelCreated()
-  event.watch(function (err, result) {
+ethereum.enable().then(function () {
+  web3.eth.getAccounts(function (err, accounts) {
     if (err) throw err
 
-    if (result.args.to === myAddress ||
-        result.args.from === myAddress) {
-      event.stopWatching(function () {
-        app.watching = false
-        app.contractAddress = result.args.contractAddress
+    var myAddress = accounts[0]
 
-        console.log('Contract deployed at ' + app.contractAddress)
+    app.initFrom = myAddress
+    app.myAddress = myAddress
 
-        if (myAddress === result.args.to) {
-          app.otherPersonAddress = result.args.from
-          app.otherBalance = web3.fromWei(result.args.value.toString())
-        } else {
-          app.otherPersonAddress = result.args.to
-          app.myBalance = web3.fromWei(result.args.value.toString())
-        }
+    var event = channelFactory.ChannelCreated()
+    event.watch(function (err, result) {
+      if (err) throw err
 
-        channel = web3.eth.contract(abiArrayChannel).at(app.contractAddress)
+      if (result.args.to === myAddress ||
+          result.args.from === myAddress) {
+        event.stopWatching(function () {
+          app.watching = false
+          app.contractAddress = result.args.contractAddress
 
-        var closedEvent = channel.ChannelClosed()
-        closedEvent.watch(function (err, rsult) {
-          if (err) throw err
+          console.log('Contract deployed at ' + app.contractAddress)
 
-          closedEvent.stopWatching(function () {
-            app.channelClosed = true
+          if (myAddress === result.args.to) {
+            app.otherPersonAddress = result.args.from
+            app.otherBalance = web3.fromWei(result.args.value.toString())
+          } else {
+            app.otherPersonAddress = result.args.to
+            app.myBalance = web3.fromWei(result.args.value.toString())
+          }
 
-            if (app.closeTransactionHash) {
-              socket.emit('transaction', {
-                closeTransactionHash: app.closeTransactionHash,
-                channelClosed: true
-              })
-            }
+          channel = web3.eth.contract(abiArrayChannel).at(app.contractAddress)
+
+          var closedEvent = channel.ChannelClosed()
+          closedEvent.watch(function (err, rsult) {
+            if (err) throw err
+
+            closedEvent.stopWatching(function () {
+              app.channelClosed = true
+
+              if (app.closeTransactionHash) {
+                socket.emit('transaction', {
+                  closeTransactionHash: app.closeTransactionHash,
+                  channelClosed: true
+                })
+              }
+            })
           })
-        })
 
-        socket.emit('join', result.args.contractAddress)
-      })
-    }
+          socket.emit('join', result.args.contractAddress)
+        })
+      }
+    })
   })
 })
