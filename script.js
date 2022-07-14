@@ -8,7 +8,7 @@ var channelFactory = web3.eth.contract(abiArrayFactory).at(factoryAddress)
 var channel
 
 // Use whisper when ready
-var socket = io('https://dopplr-socket-server.herokuapp.com')
+var socket = io('https://state-channel-server.herokuapp.com/')
 var toWei = new BigNumber('1000000000000000000')
 
 var wrapDataUri = function (text) {
